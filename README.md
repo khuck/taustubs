@@ -112,3 +112,14 @@ The C++ API also has scoped timers for convenience:
   variable `__var`.  When `__var` goes out of scope, stop the timer in the
   destructor of `__var`.
 
+## How does it work?
+
+Pretty simple, really.  The `tau_exec` wrapper script will `LD_PRELOAD` some libraries
+that TAU uses to inject itself into the program (such as initializing itself when
+the library is loaded).  It will also add definitions to TAU API calls, such as
+`TAU_Init()`.  In the event that the program is a statically linked executable, the
+`LD_PRELOAD` technique doesn't work.  In that case, tautubs will use `getenv()` to
+check if `LD_PRELOAD` is set, and if so it will `dlopen()` all of the libraries and
+look for the TAU symbols using `dlsym()`.  If not found, the program executes as normal.
+If the symbols are found, the `TauTimer` singleton object is instantiated and initialized,
+and all timer calls will result in calls to the TAU library.
