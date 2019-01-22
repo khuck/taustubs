@@ -1,32 +1,45 @@
-This is work in progress...
+# TAUSTUBS 
+
+*This is work in progress...*
 
 The idea behind taustubs is that an application can have permanent TAU
 instrumentation in it, but not have TAU as a build dependency.  Basically, the
 instrumentation relies on function pointers that are initialized to NULL, and
-then set at program start if the TAU_xxx functions are defined in the program
-space (i.e. if the TAU preload libraries are used when running with tau_exec).
+then set at program start if the TAU functions are defined in the program
+space (i.e. if the TAU preload libraries are used when running with `tau_exec`).
+Admittedly, that requires adding this project (or it's code) as a dependency,
+but without the headache of dealing with a highly customizable performance
+measurement framework like TAU.  For more information, see [the TAU
+website](http://tau.uoregon.edu).  To download the latest TAU code, see [the
+TAU public mirror](http://github.com/UO-OACISS/tau2).
 
-see https://rafalcieslak.wordpress.com/2013/04/02/dynamic-linker-tricks-using-ld_preload-to-cheat-inject-features-and-investigate-programs/ for some more interesting ideas.
+see [https://rafalcieslak.wordpress.com/2013/04/02/dynamic-linker-tricks-using-ld_preload-to-cheat-inject-features-and-investigate-programs/] for some more interesting ideas.
 
-How to Use this code:
+## How to use this code:
 
 To just test out this code, edit (if necessary) and run the `go.sh` script.
 This will build the library and the examples.  Then just run the programs and
 see the output.  You should see the programs execute normally, with some
 warning output that the TAU libraries weren't found.
+
 ```
 khuck@ktau:~/src/taustubs$ ./build/bin/matmult_C 
 TAU libraries not loaded, TAU support unavailable
 /home/khuck/src/taustubs/build/lib/libtaustubs.so.0.1: undefined symbol: Tau_init
 Done.
 ```
+
 To run with TAU (see
 http://github.com/UO-OACISS/tau2), configure TAU with:
+
 ```
 ./configure -pthread -bfd=download
 make -j install
 ```
-then run the same examples with tau_exec and use pprof to dump the profile using text output:
+
+then run the same examples with `tau_exec` and use `pprof` to dump the profile
+using text output (the *serial* option for TAU means non-MPI):
+
 ```
 khuck@ktau:~/src/taustubs$ tau_exec -T serial,pthread ./build/bin/matmult_C
 Done.
@@ -66,3 +79,36 @@ FUNCTION SUMMARY (mean):
   0.0       0.0615       0.0615        0.75           0         82 pthread_create
 
 ```
+
+## How to use this code in *your* project
+
+To use this code in your project, either add the files in the `src` directory to
+your project, or add the taustubs library as a build dependency.  To add instrumentation
+to your project, include `taustubs.hpp`, `taustubs.h`, or `taustubsf.h` to your
+source file (making sure to define `USE_TAU_STUBS` first - otherwise the macros
+will be compiled away), and add the API calls.  See the examples for details, 
+but the API includes:
+
+* `TAU_REGISTER_THREAD()` - the first thing a spawned pthread should do, lets TAU
+  know that there is a new thread, in case `pthread_create()` wasn't captured.
+* `TAU_START(_timer_name)` - start a timer with the name `_timer_name`.
+* `TAU_STOP(_timer_name)` - stop a timer with the name `_timer_name`.
+* `TAU_START_FUNC()` - start a timer with the name of the current function (using
+  the `__func__` preprocessor macro).
+* `TAU_STOP_FUNC()` - start a timer with the name of the current function (using
+  the `__func__` preprocessor macro).
+* `TAU_SAMPLE_COUNTER(_name, _value)` - sample a counter with the name `_name` and
+  the value `_value`
+* `TAU_METADATA(_name, _value)` - capture metadata as a key/value pair with
+  the name `_name` and the value `_value`
+
+The C++ API also has scoped timers for convenience:
+
+* `TAUSTUBS_SCOPED_TIMER(__var,__name)` - start a timer with the name `__name` and
+  create a stack variable `__var`.  When `__var` goes out of scope, stop the timer
+  in the destructor of `__var`.
+* `TAUSTUBS_SCOPED_TIMER_FUNC(__var)` - start a timer with the name of the current
+  function (using the `__func__` preprocessor macro) and create a stack
+  variable `__var`.  When `__var` goes out of scope, stop the timer in the
+  destructor of `__var`.
+
