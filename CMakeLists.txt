@@ -1,7 +1,15 @@
 cmake_minimum_required (VERSION 3.9 FATAL_ERROR)
 
+if (NOT DEFINED BUILD_FORTRAN_EXAMPLE)
+    SET(BUILD_FORTRAN_EXAMPLE OFF)
+endif (NOT DEFINED BUILD_FORTRAN_EXAMPLE)
+
 # set the project name
-project (taustubs LANGUAGES CXX C Fortran VERSION 0.1 DESCRIPTION "TAU stub library")
+if (BUILD_FORTRAN_EXAMPLE)
+    project (taustubs LANGUAGES CXX C Fortran VERSION 0.1 DESCRIPTION "TAU stub library")
+else (BUILD_FORTRAN_EXAMPLE)
+    project (taustubs LANGUAGES CXX C VERSION 0.1 DESCRIPTION "TAU stub library")
+endif (BUILD_FORTRAN_EXAMPLE)
 
 # if the user didn't specify, set the installation directory.
 if(NOT DEFINED CMAKE_INSTALL_PREFIX OR CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)

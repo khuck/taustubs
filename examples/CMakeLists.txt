@@ -31,13 +31,16 @@ INSTALL(TARGETS matmult_C cpi_cpp RUNTIME DESTINATION bin OPTIONAL)
 
 # Fortran example
 
-set(HELLO_SOURCES "Fortran/hello.F90")
+if (BUILD_FORTRAN_EXAMPLE)
 
-add_executable(hello_fortran ${HELLO_SOURCES})
-target_link_libraries (hello_fortran taustubs stdc++ gcc_s)
-target_include_directories(hello_fortran PRIVATE ${CMAKE_SOURCE_DIR}/src)
-add_dependencies (hello_fortran taustubs)
+    set(HELLO_SOURCES "Fortran/hello.F90")
 
-INSTALL(TARGETS matmult_C cpi_cpp hello_fortran RUNTIME DESTINATION bin OPTIONAL)
+    add_executable(hello_fortran ${HELLO_SOURCES})
+    target_link_libraries (hello_fortran taustubs stdc++ gcc_s)
+    target_include_directories(hello_fortran PRIVATE ${CMAKE_SOURCE_DIR}/src)
+    add_dependencies (hello_fortran taustubs)
 
+    INSTALL(TARGETS matmult_C cpi_cpp hello_fortran RUNTIME DESTINATION bin OPTIONAL)
+
+endif (BUILD_FORTRAN_EXAMPLE)
 
