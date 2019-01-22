@@ -7,6 +7,6 @@ initialized to NULL, and then set at program start if the TAU_xxx
 functions are defined in the program space (i.e. if the TAU preload
 libraries are used).
 
-The only confirmed working example is the C++ example.
+The only confirmed working examples are the C and C++ examples.
 
 see https://rafalcieslak.wordpress.com/2013/04/02/dynamic-linker-tricks-using-ld_preload-to-cheat-inject-features-and-investigate-programs/ for some more interesting ideas.
