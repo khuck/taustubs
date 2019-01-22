@@ -186,11 +186,10 @@ int busy_sleep() {
   TAU_STOP_FUNC();
 }
 
-void * threaded_func(void *data)
+void * threaded_func(void* UNUSED(data))
 {
+  TAU_REGISTER_THREAD();
   TAU_START_FUNC();
-  int rc;
-  int sum = 0;
   // compute
   int i;
   for (i = 0 ; i < 1 ; i++) {
@@ -198,6 +197,8 @@ void * threaded_func(void *data)
   }
 
 #ifdef APP_DO_LOCK_TEST
+  int rc;
+  int sum = 0;
   // test locking - sampling should catch this
   if ((rc = pthread_mutex_lock(&mutexsum)) != 0)
   {
@@ -226,7 +227,6 @@ int main (int UNUSED(argc), char* UNUSED(argv[]))
   TAU_START_FUNC();
 #ifdef PTHREADS
   int ret;
-  pthread_attr_t  attr;
   pthread_t       tid1, tid2, tid3;
   pthread_mutexattr_t Attr;
   pthread_mutexattr_init(&Attr);

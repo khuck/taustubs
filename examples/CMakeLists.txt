@@ -9,7 +9,8 @@ link_directories (${CMAKE_BINARY_DIR}/src)
 set( MM_SOURCES "C/matmult.c" "C/matmult_initialize.c" "C/matmult_initialize.h")
 
 add_executable(matmult_C ${MM_SOURCES})
-target_link_libraries (matmult_C taustubs stdc++ m)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread -DPTHREADS")
+target_link_libraries (matmult_C taustubs stdc++ pthread m)
 target_include_directories(matmult_C PRIVATE ${CMAKE_SOURCE_DIR}/src)
 add_dependencies (matmult_C taustubs)
 
