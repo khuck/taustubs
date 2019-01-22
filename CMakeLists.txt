@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.9 FATAL_ERROR)
 
 # set the project name
-project (taustubs LANGUAGES CXX C VERSION 0.1 DESCRIPTION "TAU stub library")
+project (taustubs LANGUAGES CXX C Fortran VERSION 0.1 DESCRIPTION "TAU stub library")
 
 # if the user didn't specify, set the installation directory.
 if(NOT DEFINED CMAKE_INSTALL_PREFIX OR CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)

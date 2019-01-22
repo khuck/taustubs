@@ -202,6 +202,7 @@ TauTimer::~TauTimer(void) {
 /* Expose the API to C and Fortran */
 
 extern "C" {
+// C Bindings
 void TauTimer_RegisterThread() { 
     taustubs::TauTimer::RegisterThread();
 }
@@ -219,6 +220,27 @@ void TauTimer_SampleCounter(const char * name, const double value) {
 }
 
 void TauTimer_MetaData(const char * name, const char * value) {
+    taustubs::TauTimer::MetaData(name, value);
+}
+
+// Fortran Bindings
+void tautimer_registerthread_() { 
+    taustubs::TauTimer::RegisterThread();
+}
+
+void tautimer_start_(const char * timer_name) { 
+    taustubs::TauTimer::Start(timer_name);
+}
+
+void tautimer_stop_(const char * timer_name) {
+    taustubs::TauTimer::Stop(timer_name);
+}
+
+void tautimer_samplecounter_(const char * name, const double value) {
+    taustubs::TauTimer::SampleCounter(name, value);
+}
+
+void tautimer_metadata_(const char * name, const char * value) {
     taustubs::TauTimer::MetaData(name, value);
 }
 
