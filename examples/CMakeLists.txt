@@ -36,7 +36,7 @@ if (BUILD_FORTRAN_EXAMPLE)
     set(HELLO_SOURCES "Fortran/hello.F90")
 
     add_executable(hello_fortran ${HELLO_SOURCES})
-    target_link_libraries (hello_fortran taustubs stdc++ gcc_s)
+    target_link_libraries (hello_fortran taustubs stdc++)
     target_include_directories(hello_fortran PRIVATE ${CMAKE_SOURCE_DIR}/src)
     add_dependencies (hello_fortran taustubs)
 
