@@ -82,12 +82,12 @@ FUNCTION SUMMARY (mean):
 
 ## How to use this code in *your* project
 
-To use this code in your project, either add the files in the `src` directory to
-your project, or add the taustubs library as a build dependency.  To add instrumentation
-to your project, include `taustubs.hpp`, `taustubs.h`, or `taustubsf.h` to your
-source file (making sure to define `USE_TAU_STUBS` first - otherwise the macros
-will be compiled away), and add the API calls.  See the examples for details, 
-but the API includes:
+To use this code in your project, either add the files in the `src` directory
+to your project, or add the taustubs library as a build dependency.  To add
+instrumentation to your project, include `tautimer.hpp` (C++), `taustubs.h`
+(C), or `taustubsf.h` (Fortran) to your source file (making sure to define
+`USE_TAU_STUBS` first - otherwise the macros will be compiled away), and add
+the API calls.  See the examples for details, but the API includes:
 
 * `TAU_REGISTER_THREAD()` - the first thing a spawned pthread should do, lets TAU
   know that there is a new thread, in case `pthread_create()` wasn't captured.
