@@ -15,6 +15,9 @@ TAU public mirror](http://github.com/UO-OACISS/tau2).
 
 see [https://rafalcieslak.wordpress.com/2013/04/02/dynamic-linker-tricks-using-ld_preload-to-cheat-inject-features-and-investigate-programs/] for some more interesting ideas.
 
+*NOTE: dlopen() in static executables seems to crash when libpthread.so is
+loaded.  This is still under investigation.*
+
 ## How to use this code:
 
 To just test out this code, edit (if necessary) and run the `go.sh` script.
