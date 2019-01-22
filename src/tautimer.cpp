@@ -5,7 +5,9 @@ file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
 #include "tautimer.hpp"
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
 #include <dlfcn.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -193,26 +195,31 @@ TauTimer::~TauTimer(void) {
     if (my_Tau_exit != NULL) {
         my_Tau_exit("stub exiting");
     }
-};
+}
 
-}; // namespace taustubs
+} // namespace taustubs
 
 /* Expose the API to C and Fortran */
 
 extern "C" {
 void TauTimer_RegisterThread() { 
     taustubs::TauTimer::RegisterThread();
-};
+}
+
 void TauTimer_Start(const char * timer_name) { 
     taustubs::TauTimer::Start(timer_name);
-};
+}
+
 void TauTimer_Stop(const char * timer_name) {
     taustubs::TauTimer::Stop(timer_name);
-};
+}
+
 void TauTimer_SampleCounter(const char * name, const double value) {
     taustubs::TauTimer::SampleCounter(name, value);
-};
+}
+
 void TauTimer_MetaData(const char * name, const char * value) {
     taustubs::TauTimer::MetaData(name, value);
-};
+}
+
 } // extern "C"

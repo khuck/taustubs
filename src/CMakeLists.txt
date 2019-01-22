@@ -16,6 +16,7 @@ set( SOURCES
 
 add_library(taustubs ${SOURCES})
 target_compile_features(taustubs PUBLIC "cxx_std_11")
+target_link_libraries (taustubs dl)
 set_target_properties(taustubs PROPERTIES VERSION ${PROJECT_VERSION})
 
 install(

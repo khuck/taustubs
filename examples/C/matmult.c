@@ -54,62 +54,17 @@ void freeMatrix(double** matrix, int rows) {
   TAU_STOP_FUNC();
 }
 
-#ifdef APP_USE_INLINE_MULTIPLY
-__inline double multiply(double a, double b) {
-	return a * b;
-}
-#endif /* APP_USE_INLINE_MULTIPLY */
-
-#if 0
-// cols_a and rows_b are the same value
-void compute_nested(double **a, double **b, double **c, int rows_a, int cols_a, int cols_b) {
-  int i,j,k;
-  double tmp = 0.0;
-//num_threads(2)
-#pragma omp parallel private(i) shared(a,b,c) 
-  {
-    /*** Do matrix multiply sharing iterations on outer loop ***/
-    /*** Display who does which iterations for demonstration purposes ***/
-#pragma omp for nowait schedule(dynamic,1)
-    for (i=0; i<rows_a; i++) {
-//num_threads(2)
-#pragma omp parallel private(i,j,k) shared(a,b,c) 
-      {
-#pragma omp for nowait schedule(dynamic,1)
-        for (k=0; k<cols_a; k++) {
-          for(j=0; j<cols_b; j++) {
-#ifdef APP_USE_INLINE_MULTIPLY
-              c[i][j] += multiply(a[i][k], b[k][j]);
-#else 
-              tmp = a[i][k];
-			  tmp = tmp * b[k][j];
-              c[i][j] += tmp;
-#endif 
-            }
-          }
-      }
-    }
-  }   /*** End of parallel region ***/
-}
-#endif
-
 // cols_a and rows_b are the same value
 void compute(double **a, double **b, double **c, int rows_a, int cols_a, int cols_b) {
   TAU_START_FUNC();
   int i,j,k;
-#pragma omp parallel private(i,j,k) shared(a,b,c)
   {
     /*** Do matrix multiply sharing iterations on outer loop ***/
     /*** Display who does which iterations for demonstration purposes ***/
-#pragma omp for schedule(dynamic) nowait
     for (i=0; i<rows_a; i++) {
       for(j=0; j<cols_b; j++) {
         for (k=0; k<cols_a; k++) {
-#ifdef APP_USE_INLINE_MULTIPLY
-          c[i][j] += multiply(a[i][k], b[k][j]);
-#else /* APP_USE_INLINE_MULTIPLY */
           c[i][j] += a[i][k] * b[k][j];
-#endif /* APP_USE_INLINE_MULTIPLY */
         }
       }
     }
@@ -120,19 +75,13 @@ void compute(double **a, double **b, double **c, int rows_a, int cols_a, int col
 void compute_interchange(double **a, double **b, double **c, int rows_a, int cols_a, int cols_b) {
   TAU_START_FUNC();
   int i,j,k;
-#pragma omp parallel private(i,j,k) shared(a,b,c)
   {
     /*** Do matrix multiply sharing iterations on outer loop ***/
     /*** Display who does which iterations for demonstration purposes ***/
-#pragma omp for schedule(dynamic) nowait
     for (i=0; i<rows_a; i++) {
       for (k=0; k<cols_a; k++) {
         for(j=0; j<cols_b; j++) {
-#ifdef APP_USE_INLINE_MULTIPLY
-          c[i][j] += multiply(a[i][k], b[k][j]);
-#else /* APP_USE_INLINE_MULTIPLY */
           c[i][j] += a[i][k] * b[k][j];
-#endif /* APP_USE_INLINE_MULTIPLY */
         }
       }
     }
@@ -156,13 +105,6 @@ double do_work(void) {
   initialize(c, NRA, NCB);
 
   compute(a, b, c, NRA, NCA, NCB);
-#if defined(TAU_OPENMP)
-#if 0
-  //if (omp_get_nested()) {
-    compute_nested(a, b, c, NRA, NCA, NCB);
-  //}
-#endif
-#endif
   compute_interchange(a, b, c, NRA, NCA, NCB);
 
   double result = c[0][1];

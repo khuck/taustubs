@@ -23,7 +23,7 @@ public:
     static void MetaData(const char * name, const char * value);
     // The only way to get an instance of this class
     static TauTimer &get(void) { 
-         static std::auto_ptr<TauTimer> instance( new TauTimer );
+         static std::unique_ptr<TauTimer> instance( new TauTimer );
          return *instance;
     }
     // destructor
@@ -49,7 +49,7 @@ class scoped_timer {
         }
 }; 
 
-}; // namespace taustubs
+} // namespace taustubs
 
 #if defined(TAU_USE_STUBS)
 #define TAUSTUBS_SCOPED_TIMER(__var,__name) taustubs::scoped_timer __var(__name);      
