@@ -11,3 +11,4 @@ cmake \
 ..
 #make VERBOSE=1 install
 make install
+make test

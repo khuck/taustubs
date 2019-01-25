@@ -13,6 +13,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread -DPTHREADS")
 target_link_libraries (matmult_C taustubs stdc++ pthread m)
 target_include_directories(matmult_C PRIVATE ${CMAKE_SOURCE_DIR}/src)
 add_dependencies (matmult_C taustubs)
+add_test ("test_matmult_C" matmult_C)
 
 INSTALL(TARGETS matmult_C RUNTIME DESTINATION bin OPTIONAL)
 
@@ -26,8 +27,7 @@ target_link_libraries (cpi_cpp taustubs pthread m)
 target_include_directories(cpi_cpp PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_compile_features(cpi_cpp PUBLIC "cxx_std_11")
 add_dependencies (cpi_cpp taustubs)
-
-INSTALL(TARGETS matmult_C cpi_cpp RUNTIME DESTINATION bin OPTIONAL)
+add_test ("test_cpi_cpp" cpi_cpp)
 
 # Fortran example
 
@@ -39,8 +39,11 @@ if (BUILD_FORTRAN_EXAMPLE)
     target_link_libraries (hello_fortran taustubs stdc++)
     target_include_directories(hello_fortran PRIVATE ${CMAKE_SOURCE_DIR}/src)
     add_dependencies (hello_fortran taustubs)
+    add_test ("test_hello_fortran" cpi_cpp)
 
     INSTALL(TARGETS matmult_C cpi_cpp hello_fortran RUNTIME DESTINATION bin OPTIONAL)
 
+else (BUILD_FORTRAN_EXAMPLE)
+    INSTALL(TARGETS matmult_C cpi_cpp RUNTIME DESTINATION bin OPTIONAL)
 endif (BUILD_FORTRAN_EXAMPLE)
 
