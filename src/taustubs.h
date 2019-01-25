@@ -26,8 +26,11 @@ void TauTimer_MetaData(const char * name, const char * value);
 #define TAU_REGISTER_THREAD() TauTimer_RegisterThread();
 #define TAU_START(_timer_name) TauTimer_Start(_timer_name);
 #define TAU_STOP(_timer_name) TauTimer_Stop(_timer_name);
-#define TAU_START_FUNC() TauTimer_Start(__func__);
-#define TAU_STOP_FUNC() TauTimer_Stop(__func__);
+#define TAU_START_FUNC() \
+    char __tauFuncName[1024]; \
+    sprintf(__tauFuncName, "%s [{%s} {%d,0}]", __func__, __FILE__, __LINE__); \
+    TauTimer_Start(__tauFuncName);
+#define TAU_STOP_FUNC() TauTimer_Stop(__tauFuncName);
 #define TAU_SAMPLE_COUNTER(_name, _value) TauTimer_SampleCounter(_name, _value);
 #define TAU_METADATA(_name, _value) TauTimer_MetaData(_name, _value);
 #else

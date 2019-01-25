@@ -49,8 +49,8 @@ std::atomic<std::uint32_t> pcnt(0);
 template <class RandEng>
 void calculate_pi(std::uint32_t nppt,RandEng rgen)
 {
-    taustubs::TauTimer::RegisterThread();
-    TAUSTUBS_SCOPED_TIMER_FUNC(mytimer);
+    TAU_REGISTER_THREAD();
+    TAU_SCOPED_TIMER_FUNC();
     point_t rpt;
     std::uint32_t my_pcnt = 0;
     for (std::uint32_t i=0;i<nppt;i++)
@@ -65,7 +65,7 @@ void calculate_pi(std::uint32_t nppt,RandEng rgen)
 
 int main (int UNUSED(argc), char** UNUSED(argv)) 
 {
-    TAUSTUBS_SCOPED_TIMER_FUNC(mytimer);
+    TAU_SCOPED_TIMER_FUNC();
     // Check number of cores
     std::size_t num_cores = std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : 1;
 
@@ -88,7 +88,8 @@ int main (int UNUSED(argc), char** UNUSED(argv))
         seed[12],seed[13],seed[14],seed[15]
     );
 
-    std::uint32_t num_points = 3221225472;
+    // std::uint32_t num_points = 3221225472;
+    std::uint32_t num_points = 201326592;
     std::uint32_t num_points_per_thread = num_points/num_cores;
 
     for (std::size_t i=0;i<num_cores;i++)
