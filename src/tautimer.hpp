@@ -60,7 +60,7 @@ namespace taustubs {
 #define TAU_STOP(_timer_name) taustubs::TauTimer::Stop(_timer_name);
 #define TAU_SAMPLE_COUNTER(_name, _value) taustubs::TauTimer::SampleCounter(_name, _value);
 #define TAU_METADATA(_name, _value) taustubs::TauTimer::MetaData(_name, _value);
-#define TAU_SCOPED_TIMER(__var,__name) taustubs::scoped_timer __var##finfo(__name);
+#define TAU_SCOPED_TIMER(__name) taustubs::scoped_timer __var##finfo(__name);
 #define TAU_SCOPED_TIMER_FUNC() \
     std::stringstream __ss##finfo; \
     __ss##finfo << __func__ << " [{" << __FILE__ << "} {" << __LINE__ << ",0}]"; \
@@ -75,8 +75,8 @@ namespace taustubs {
 #define TAU_STOP_FUNC()
 #define TAU_SAMPLE_COUNTER(_name, _value)
 #define TAU_METADATA(_name, _value)
-#define TAU_SCOPED_TIMER(__var,__name)
-#define TAU_SCOPED_TIMER_FUNC(__var)
+#define TAU_SCOPED_TIMER(__name)
+#define TAU_SCOPED_TIMER_FUNC()
 
 #endif
 
