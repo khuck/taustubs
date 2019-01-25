@@ -1,8 +1,8 @@
-/*  
-Copyright (c) 2019 University of Oregon
-Distributed under the Boost Software License, Version 1.0. (See accompanying
-file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-*/
+/*
+    Copyright (c) 2019 University of Oregon
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ */
 
 #ifndef TAUSTUBS_H
 #define TAUSTUBS_H
@@ -15,10 +15,13 @@ void TauTimer_Stop(const char * timer_name);
 void TauTimer_SampleCounter(const char * name, const double value);
 void TauTimer_MetaData(const char * name, const char * value);
 
-/* Macro API for option of entirely disabling at compile time */
-/* To use this API, set the Macro TAU_USE_STUBS on the command */
-/* line or in a config.h file, however your project does it  */
+/*
+    Macro API for option of entirely disabling at compile time
+    To use this API, set the Macro TAU_USE_STUBS on the command
+    line or in a config.h file, however your project does it
+ */
 
+#define TAU_USE_STUBS
 #if defined(TAU_USE_STUBS)
 #define TAU_REGISTER_THREAD() TauTimer_RegisterThread();
 #define TAU_START(_timer_name) TauTimer_Start(_timer_name);
