@@ -59,7 +59,7 @@ void open_preload_libraries(void) {
 #endif
   const char * preload = getenv(envvar);
   if (preload != NULL) {
-    fprintf(stderr, "%s:\n%s\n", envvar, preload);
+    //fprintf(stderr, "%s:\n%s\n", envvar, preload);
     /* tokenize it */
     char* token = strtok((char*)preload, ":");
     while (token) {
@@ -69,7 +69,7 @@ void open_preload_libraries(void) {
       token = strtok(NULL, ":");
     }
   }
-  fprintf(stderr, "%s not set!\n", envvar);
+  //fprintf(stderr, "%s not set!\n", envvar);
 }
 
 int assign_function_pointers(void) {
@@ -79,7 +79,7 @@ int assign_function_pointers(void) {
     my_Tau_init = (Tau_init_type)dlsym(RTLD_DEFAULT,"Tau_init");
     if (my_Tau_init == NULL) {
       /* Optional - print an error message, because TAU wasn't preloaded! */
-      fprintf(stderr, "TAU libraries not loaded, TAU support unavailable\n%s\n", dlerror());
+      //fprintf(stderr, "TAU libraries not loaded, TAU support unavailable\n%s\n", dlerror());
       return 1;
     }
   }
